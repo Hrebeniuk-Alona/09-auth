@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Note } from "@/type/note";
+import { Note } from "@/types/note";
 
 
 export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";

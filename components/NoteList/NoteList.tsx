@@ -1,6 +1,6 @@
 
 
-import { Note } from "@/type/note";
+import { Note } from "@/types/note";
 import css from "../NoteList/NoteList.module.css"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast";
