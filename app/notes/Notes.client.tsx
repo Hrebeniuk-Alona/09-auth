@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import css from "./NotesPage.module.css"
-import { Note, fetchNotes, PaginatedNotesResponse } from '@/lib/api'
+import {  fetchNotes, PaginatedNotesResponse } from '@/lib/api'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import { keepPreviousData, useQuery} from "@tanstack/react-query"
 import NoteList from '@/components/NoteList/NoteList'
 import Pagination from '@/components/Pagination/Pagination'
 import { useDebounce } from "use-debounce";
-
+import { Note } from '@/type/note';
 import NoteModal from '@/components/NoteModal/NoteModal'
 
 

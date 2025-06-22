@@ -1,13 +1,6 @@
 import axios from "axios";
+import { Note } from "@/type/note";
 
-export type Note={
-    id: number;
-    title: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-    tag: string;
-}
 
 export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
