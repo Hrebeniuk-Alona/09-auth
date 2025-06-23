@@ -12,40 +12,41 @@ import { Note } from '@/types/note';
 import NoteModal from '@/components/NoteModal/NoteModal'
 
 
+type Props = {
+  initialData: PaginatedNotesResponse;
+}
 
-const NotesClient=()=>{
 
-  const [currentSearchQuery, setCurrentSearchQuery] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const [debouncedSearchQuery] = useDebounce(currentSearchQuery, 500);
+const NotesClient=({initialData}:Props)=>{
+
+  const [searchText, setSearchText] = useState("")
+  const [page, setPage] = useState(1)
+  const [debouncedSearchQuery] = useDebounce(searchText, 500);
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
 
   const openCreateNoteModal = () => setIsNoteModalOpen(true);
   const closeCreateNoteModal = () => setIsNoteModalOpen(false);
   
 
-  const handleSearch = async (newQuery: string) => {
-    setCurrentSearchQuery(newQuery);
-    setCurrentPage(1);
-  }
- 
-
   const { data, isLoading, isError } = useQuery<
     PaginatedNotesResponse
   >({
-    queryKey: ['notes', currentPage, debouncedSearchQuery],
-    queryFn: () => fetchNotes(currentPage, 12, debouncedSearchQuery),
-    enabled: true,
+    queryKey: ['notes', page, debouncedSearchQuery],
+    queryFn: () => fetchNotes(page, 12, debouncedSearchQuery),
     placeholderData: keepPreviousData,
+    initialData: page === 1 && debouncedSearchQuery === '' ? initialData : undefined,
   })
 
   const notes: Note[] = data?.notes || [];
-  const totalPage:number = data?.totalPages ?? 0;
-
-
+  const totalPage: number = data?.totalPages ?? 0;
+  
+  const handleSearch = (newQuery: string) => {
+    setSearchText(newQuery);
+    setPage(1);
+  }
 
   const handlePageClick = (event: { selected: number }) => {
-    setCurrentPage(event.selected + 1);
+    setPage(event.selected + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -55,10 +56,10 @@ const NotesClient=()=>{
         <div className={css.app}>
           <header className={css.toolbar}>
 	 
-            <SearchBox value={currentSearchQuery} onSubmit={handleSearch} />
+            <SearchBox value={searchText} onSubmit={handleSearch} />
           
             {notes.length > 0 && (<Pagination onClickPage={handlePageClick} pageCount={totalPage}
-              currentPage={currentPage} />)}
+              currentPage={page} />)}
           
             <button className={css.button} onClick={openCreateNoteModal}>Create note +</button>
      

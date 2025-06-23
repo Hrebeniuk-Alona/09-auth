@@ -9,7 +9,7 @@ import NoteModal from "@/components/NoteModal/NoteModal";
 
 
 
-const NoteDetalisClient = () => {
+const NoteDetailsClient = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams();
@@ -55,4 +55,4 @@ const NoteDetalisClient = () => {
 
 }
 
-export default NoteDetalisClient
+export default NoteDetailsClient

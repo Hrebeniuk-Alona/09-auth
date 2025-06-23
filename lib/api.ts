@@ -1,30 +1,24 @@
 import axios from "axios";
 import { Note } from "@/types/note";
 
-
 export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
-
-
-
 
 export type NewNoteContent= {
     title: string;
     content: string;
     tag: NoteTag;
-  }
+}
   
-  export type PaginatedNotesResponse ={
+export type PaginatedNotesResponse ={
     notes: Note[];
     page: number;
     totalPages: number;
     totalResults: number;
-  }
-
+}
 
 const BASE_URL = "https://notehub-public.goit.study/api";
 
 const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
 
 const axiosConfig = axios.create({
   baseURL: BASE_URL,
@@ -33,6 +27,7 @@ const axiosConfig = axios.create({
     Authorization: `Bearer ${TOKEN}`,
   },
 });
+
 
 export const fetchNotes = async (
   page: number = 1,
@@ -46,17 +41,13 @@ export const fetchNotes = async (
       perPage,
     },
   });
-
   return response.data;
 };
-
-
 
 
 export const createNote = async (content: NewNoteContent): Promise<Note> => {
   const response = await axiosConfig.post<Note>("/notes", content);
     return response.data;
-  
 };
 
 
@@ -66,8 +57,7 @@ export const deleteNote = async (id: number): Promise<Note> => {
 }
 
 
-
-export const fetchNoteById = async (id: number) => {
+export const fetchNoteById = async (id: number):Promise<Note> => {
   const res = await axiosConfig.get<Note>(`/notes/${id}`)
   return res.data
 }

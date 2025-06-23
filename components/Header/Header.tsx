@@ -3,10 +3,9 @@ import css from "./Header.module.css"
 
 const Header = () => {
     return (
-        <header className={css.header}>
-        <a href="/" aria-label="Home">
-          NoteHub
-        </a>
+      <header className={css.header}>
+        <Link href="/" aria-label="Home">NoteHub
+        </Link>
         <nav aria-label="Main Navigation">
           <ul className={css.navigation}>
              <li>
