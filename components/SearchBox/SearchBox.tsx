@@ -4,24 +4,24 @@ import css from "../SearchBox/SearchBox.module.css"
 
 
 
-type SearchBoxProps = {
+interface SearchBoxProps {
     value: string,
-    onSubmit:(query:string)=> void,
+    onChange:(query:string)=> void,
 }
 
 
-export default function SearchBox({value, onSubmit }: SearchBoxProps) {
+export default function SearchBox({value, onChange }: SearchBoxProps) {
     
 
     return (
-        <>
+        <div>
             <input
              className={css.input}
              type="text"
              value={value}
-             onChange={(e) => onSubmit(e.target.value.trim())}
+             onChange={(e) => onChange(e.target.value.trim())}
                 placeholder="Search notes"/>
-    </>    )
-   
+        </div>
+    )
 
 }

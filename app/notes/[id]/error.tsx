@@ -1,9 +1,9 @@
 "use client";
 
-type Prors = {
+type Props = {
     error:Error
 }
-const Error = ({error}:Prors) => {
+const Error = ({error}:Props) => {
     return (
         <p>Could not fetch note details. {error.message}</p>
 

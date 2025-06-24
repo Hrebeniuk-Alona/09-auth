@@ -8,7 +8,7 @@ import { deleteNote } from "@/lib/api";
 import Link from "next/link";
 
 
-type NoteListProps={
+interface NoteListProps{
     notes: Note[]
 }
 
