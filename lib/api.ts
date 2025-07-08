@@ -1,13 +1,6 @@
 import axios from "axios";
-import { Note } from "@/types/note";
+import { Note, NewNoteContent} from "@/types/note";
 
-export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
-
-export type NewNoteContent= {
-    title: string;
-    content: string;
-    tag: NoteTag;
-}
   
 export type PaginatedNotesResponse ={
     notes: Note[];
@@ -32,13 +25,15 @@ const axiosConfig = axios.create({
 export const fetchNotes = async (
   page: number = 1,
   perPage: number = 12,
-  search: string = ""
+  search: string = "",
+  tag?:string
 ): Promise<PaginatedNotesResponse> => {
   const response = await axiosConfig.get<PaginatedNotesResponse>("/notes", {
     params: {
       page,
       ...(search !== "" && { search: search }),
       perPage,
+      ...(tag && tag !== 'All'&&{tag})
     },
   });
   return response.data;
@@ -61,3 +56,11 @@ export const fetchNoteById = async (id: number):Promise<Note> => {
   const res = await axiosConfig.get<Note>(`/notes/${id}`)
   return res.data
 }
+
+
+
+export const getTags  = async ():Promise<string[]> => {
+  const res = await axiosConfig<string[]>('/tegs');
+  return res.data;
+};
+

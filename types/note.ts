@@ -4,5 +4,11 @@ export interface Note{
     content: string;
     createdAt: string;
     updatedAt: string;
-    tag: string;
+    tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+}
+
+export interface NewNoteContent {
+    title: string;
+    content?: string;
+    tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 }

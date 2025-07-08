@@ -1,4 +1,4 @@
-
+'use client'
 
 import { Note } from "@/types/note";
 import css from "../NoteList/NoteList.module.css"
