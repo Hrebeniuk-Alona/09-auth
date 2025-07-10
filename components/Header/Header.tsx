@@ -16,9 +16,10 @@ const Header = () => {
                 <Link href='/'>Home</Link>  
             </li>
              <li>
-                <TagsMenu/>
+            <TagsMenu />
             </li>
           </ul>
+          
         </nav>
       </header>
   

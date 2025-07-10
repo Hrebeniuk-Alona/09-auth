@@ -5,8 +5,8 @@ import { Form, Formik, Field, ErrorMessage as FormikErrorMessage } from "formik"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
-import { NoteTag } from "@/lib/api";
-import { NewNoteContent, createNote } from "@/lib/api";
+import { NoteTag, NewNoteContent} from "@/types/note";
+import {  createNote } from "@/lib/api";
 import { Note } from "@/types/note";
 
 

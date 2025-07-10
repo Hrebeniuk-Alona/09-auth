@@ -2,11 +2,9 @@ import axios from "axios";
 import { Note, NewNoteContent} from "@/types/note";
 
   
-export type PaginatedNotesResponse ={
-    notes: Note[];
-    page: number;
-    totalPages: number;
-    totalResults: number;
+export type FetchNotesResponse ={
+  notes: Note[];
+  totalPages: number;
 }
 
 const BASE_URL = "https://notehub-public.goit.study/api";
@@ -24,16 +22,16 @@ const axiosConfig = axios.create({
 
 export const fetchNotes = async (
   page: number = 1,
-  perPage: number = 12,
+  perPage:number=12,
   search: string = "",
   tag?:string
-): Promise<PaginatedNotesResponse> => {
-  const response = await axiosConfig.get<PaginatedNotesResponse>("/notes", {
+): Promise<FetchNotesResponse> => {
+  const response = await axiosConfig.get<FetchNotesResponse>("/notes", {
     params: {
       page,
-      ...(search !== "" && { search: search }),
       perPage,
-      ...(tag && tag !== 'All'&&{tag})
+      ...(search !== "" && { search:search}),
+      ...(tag ? { tag } : {})
     },
   });
   return response.data;
@@ -56,11 +54,4 @@ export const fetchNoteById = async (id: number):Promise<Note> => {
   const res = await axiosConfig.get<Note>(`/notes/${id}`)
   return res.data
 }
-
-
-
-export const getTags  = async ():Promise<string[]> => {
-  const res = await axiosConfig<string[]>('/tegs');
-  return res.data;
-};
 
