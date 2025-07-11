@@ -3,12 +3,12 @@ import NotesClient from "./Notes.client";
 
 
 type Props = {
-    params: { slug?: string[] };
+    params: Promise<{ slug: string[] }>;
 }
 
 const NotesByTags = async ({ params }: Props) => {
-    const slug = params.slug || [];
-    const tag = slug[0] === 'All' ? '' : slug[0] || '';
+    const { slug } = await params;
+    const tag = slug[0] === "All" ? undefined : slug[0];
 
     const response = await fetchNotes(1, 12, '', tag);
     
