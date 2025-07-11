@@ -11,9 +11,6 @@ import { Note } from "@/types/note";
 
 
 
-
-
-
 type NoteFormProps= {
     onCancel: () => void; 
     onModalClose: () => void; 

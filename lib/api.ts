@@ -31,7 +31,7 @@ export const fetchNotes = async (
       page,
       perPage,
       ...(search !== "" && { search:search}),
-      ...(tag ? { tag } : {})
+      ...(tag?.trim() ? { tag: tag.trim() } : {})
     },
   });
   return response.data;
