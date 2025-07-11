@@ -2,7 +2,10 @@
 
 import Modal from "@/components/Modal/Modal";
 import { useParams, useRouter } from "next/navigation";
-import NotePreview from "@/components/NotePreview/NotePreview";
+import css from './NotePreview.module.css'
+import { useQuery } from "@tanstack/react-query";
+import { fetchNoteById } from "@/lib/api";
+import Loading from "@/app/loading";
 
 
 export default function PreviewClient() {
@@ -10,14 +13,40 @@ export default function PreviewClient() {
     const { id } = useParams();
     const closeModal = () => router.back();
 
-    return (
-        <Modal onClose={closeModal}>
-            <NotePreview  onClose={closeModal} id={Number(id)}/>
+
+     const { data: note, isLoading } = useQuery({
+        queryKey: ["note", id],
+         queryFn: () => fetchNoteById(Number(id)),
+         refetchOnMount: false,
+        })
+
+        return (
+            <Modal onClose={closeModal}>
+                <>
+                    {isLoading && <Loading />}
+                    {note && (
+                        <div className={css.container}>
+                            <div className={css.item}>
+                                <div className={css.header}>
+                                    <h2>{note.title}</h2>
+                                    <button className={css.backBtn} onClick={closeModal}>
+                                        Go back
+                                    </button>
+                                </div>
+                                <p className={css.content}>{note.content}</p>
+                                <p className={css.date}>{note.createdAt}</p>
+                            </div>
+                        </div>
+                    )}
+                </>
+            </Modal>
+        )
+
+    }
 
 
-        </Modal>
-    )
-    
 
 
-}
+
+
+

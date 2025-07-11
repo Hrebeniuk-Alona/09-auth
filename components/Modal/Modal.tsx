@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import css from "../Modal/Modal.module.css"
 import React, { useEffect } from "react";
 
-type NoteModalProps = {
+type ModalProps = {
  children: React.ReactNode;
-  onClose: () => (void); 
+  onClose: () => void; 
 }
 
-export default function Modal({onClose, children}:NoteModalProps) {
+export default function Modal({onClose, children}:ModalProps) {
     
     const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) {

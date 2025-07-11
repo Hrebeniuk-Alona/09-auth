@@ -42,7 +42,7 @@ const NotesClient=({initialData, tag}:Props)=>{
   })
 
   const notes: Note[] = data?.notes || [];
-  const totalPage: number = data?.totalPages ?? 0;
+  const totalPages: number = data?.totalPages ?? 0;
   
   const handleSearch = (newQuery: string) => {
     setSearchText(newQuery);
@@ -62,7 +62,7 @@ const NotesClient=({initialData, tag}:Props)=>{
 	 
             <SearchBox value={searchText} onChange={handleSearch} />
           
-            {notes.length > 0 && (<Pagination onClickPage={handlePageClick} pageCount={totalPage}
+            {notes.length > 0 && (<Pagination onClickPage={handlePageClick} pageCount={totalPages}
               currentPage={page} />)}
           
             <button className={css.button} onClick={openCreateNoteModal}>Create note +</button>
