@@ -1,26 +1,16 @@
-
+'use client'; 
 
 import css from "../NoteForm/NoteForm.module.css"
-import { Form, Formik, Field, ErrorMessage as FormikErrorMessage } from "formik";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useId, useState } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { NoteTag, NewNoteContent} from "@/types/note";
-import {  createNote } from "@/lib/api";
-import { Note } from "@/types/note";
+import { createNote } from "@/lib/api";
+import { tags } from "@/lib/constans";
 
 
-
-type NoteFormProps= {
-    onCancel: () => void; 
-    onModalClose: () => void; 
-  }
-  
-  const initialValues: NewNoteContent = {
-    title: "",
-    content: "",
-    tag: "Personal", 
-  };
 
 
   const validationSchema = Yup.object({
@@ -38,93 +28,97 @@ type NoteFormProps= {
   });
 
 
+export default function NoteForm() {
+  const router = useRouter();
+  const fieldId = useId();
+  const [errors] = useState<Partial<NewNoteContent>>({})
+  
 
-export default function NoteForm({ onCancel, onModalClose }: NoteFormProps) {
-    
-    const queryClient = useQueryClient(); 
 
-    const createNoteMutation = useMutation<Note, Error, NewNoteContent>({
+    const mutation = useMutation({
         mutationFn: createNote, 
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["notes"] }); 
           toast.success("Note created successfully!"); 
-          onModalClose(); 
+          router.push('/notes/filter/all');
         },
         onError: (error) => {
           toast.error(`Error creating note: ${error.message}`); 
         },
-      });
+    });
+  
+  const handleSubmit=async(formData:FormData) =>{
+    const values: NewNoteContent = {
+  title: formData.get("title") as string,
+  content: formData.get("content") as string,
+  tag: formData.get("tag") as NoteTag,
+};
+
+mutation.mutate(values);
+
+
     
+    try {
+      await validationSchema.validate(values)
+      mutation.mutate(values)
+    }
+    catch(error) {
+      if (error instanceof Yup.ValidationError) {
+        toast.error(error.errors.join("\n"))
+      }
+    }
+  }
+
     
+  return (
+    <form action={handleSubmit} className={css.form} >
+      <div className={css.formGroup}>
+        <label htmlFor={`${fieldId}-title`}>Title</label>
+          <input
+            id={`${fieldId}-title`}
+            type="text" name="title" 
+           className={css.input}/>
+         {(errors.title && <div className={css.error}>{errors.title}</div>) ||
+          "\u00A0"}
+      </div>
+       
 
-    return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-                createNoteMutation.mutate(values);
-                resetForm();
-             }} >
+      <div className={css.formGroup}>
+        <label htmlFor={`${fieldId}-content`}>Content</label>
+        <textarea id={`${fieldId}-content`} name="content" rows={8} className={css.textarea} /> 
+        {(errors.content && (
+          <div className={css.error}>{ errors.content}</div>
+        )) || "\u00A0"}
+      </div>
 
-        
- {()=>(
-          <Form className={css.form}>
-            <div className={css.formGroup}>
-              <label htmlFor="title">Title</label>
-              <Field id="title" type="text" name="title" className={css.input} />
-              <FormikErrorMessage
-              name="title"
-              component="span"
-              className={css.error}
-              />
-            </div>
-            
-            <div className={css.formGroup}>
-              <label htmlFor="content">Content</label>
-              <Field
-                as="textarea"
-                id="content"
-                name="content"
-                rows="8"
-                className={css.textarea}
-              />
-    <FormikErrorMessage
-         name="content"
-        component="span"
-         className={css.error}
-            />
-  </div>
 
-  <div className={css.formGroup}>
-    <label htmlFor="tag">Tag</label>
-    <Field as="select" id="tag" name="tag" className={css.select}>
-      <option value="Todo">Todo</option>
-      <option value="Work">Work</option>
-      <option value="Personal">Personal</option>
-      <option value="Meeting">Meeting</option>
-      <option value="Shopping">Shopping</option>
-    </Field>
-    <FormikErrorMessage
-              name="tag"
-              component="span"
-              className={css.error}
-            />
-  </div>
+      <div className={css.formGroup}>
+        <label  htmlFor={`${fieldId}-tag`}>Tag</label>
+        <select id={`${fieldId}-tag`} name="tag" className={css.select}>
+          {tags.map((tag) =>(
+              <option key={tag} value={tag}>
+              {tag}
+            </option>)
+          )}
+        </select>
+        {(errors.tag && (<div className={css.error}>{errors.tag}</div>)) || "\u00A0"}
+      </div>
+      
 
-  <div className={css.actions}>
-    <button type="button" className={css.cancelButton}
-        onClick={onCancel}>
+      <div className={css.action}>
+        <button type="button" className={css.cancelButton}
+        onClick={()=>router.back()}>
       Cancel
     </button>
     <button
       type="submit"
       className={css.submitButton}
-      disabled={createNoteMutation.isPending}
+      disabled={mutation.isPending}
     >
-      Create note
-    </button>
-  </div>
-</Form>)}
-</Formik>
+      {mutation.isPending ? "Creating..." : "Create note"}
+      </button>
+      </div>
+
+      </form>
+
     )
 }

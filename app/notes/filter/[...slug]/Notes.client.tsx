@@ -6,12 +6,10 @@ import { keepPreviousData, useQuery} from "@tanstack/react-query"
 import { useDebounce } from "use-debounce";
 import { Note } from '@/types/note';
 import css from "./NotesPage.module.css"
-import Modal from '@/components/Modal/Modal'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import NoteList from '@/components/NoteList/NoteList'
 import Pagination from '@/components/Pagination/Pagination'
-import NoteForm from '@/components/NoteForm/NoteForm';
-
+import Link from 'next/link';
 
 interface Props {
   initialData: {
@@ -26,10 +24,6 @@ const NotesClient=({initialData, tag}:Props)=>{
   const [searchText, setSearchText] = useState("")
   const [page, setPage] = useState(1)
   const [debouncedSearchQuery] = useDebounce(searchText, 500);
-  const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
-
-  const openCreateNoteModal = () => setIsNoteModalOpen(true);
-  const closeCreateNoteModal = () => setIsNoteModalOpen(false);
   
 
   const { data, isLoading, isError } = useQuery<
@@ -53,8 +47,7 @@ const NotesClient=({initialData, tag}:Props)=>{
     setPage(event.selected + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
-
+  
     return (
       <>
         <div className={css.app}>
@@ -64,32 +57,19 @@ const NotesClient=({initialData, tag}:Props)=>{
           
             {notes.length > 0 && (<Pagination onClickPage={handlePageClick} pageCount={totalPages}
               currentPage={page} />)}
-          
-            <button className={css.button} onClick={openCreateNoteModal}>Create note +</button>
+            
+            <Link href="/app/notes/action/create" className={css.button}>Create note +</Link>
      
           </header>
 
-
           {isLoading && <p>Loading...</p>}
           {isError && <p>Something went wrong</p>}
-
       
           {notes.length > 0 && <NoteList notes={notes} />}
 
-          
-           {isNoteModalOpen && (
-        <Modal onClose={closeCreateNoteModal}>
-          <NoteForm
-            onCancel={closeCreateNoteModal}
-            onModalClose={closeCreateNoteModal}
-          />
-        </Modal>
-      )}
         </div>
       </>
-
     ) 
-
 }
 
 
