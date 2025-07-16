@@ -20,11 +20,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "NoteHub – Plan, Add, and Organize Your Tasks",
     description: "NoteHub is a simple and efficient app for managing your tasks. Add, delete, and stay on top of your daily plans with ease.",
-    url: 'https://notehub-public.goit.study/api/notes',
+    url: "https://08-zustand-fawn-six.vercel.app/",
     images:[{
         url: `https://ac.goit.global/fullstack/react/notehub-og-meta.jpg`,
         width: 1200,
-          height: 630,
+        height: 630,
+        alt: `NoteHub`,
       }]
   }
 };
@@ -37,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.variable}>
+      <body className={`${roboto.variable}`}>
         <TanStackProvider>
         <Header />
         <main>

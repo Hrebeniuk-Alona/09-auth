@@ -3,12 +3,12 @@ import NotesClient from "./Notes.client";
 import { Metadata } from "next";
 
 type Props = {
-    params: Promise<{ slug: string[] }>;
+   params: Promise<{ slug: string[] }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params;
-     const tag = slug[0] === "All" ? undefined : slug[0];
+    const { slug } =await params;
+    const tag = slug[0] === "All" ? "All" : slug[0];
     
     const readableTag = tag ? tag[0].toUpperCase() + tag.slice(1) : "All Notes"
     
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
             title: `${readableTag}– Notes | NoteHub`,
             description,
-            url: `https://notehub-public.goit.study/api/notes/${tag ?? "All"}`,
+            url: `https://08-zustand-seven.vercel.app/notes/filter/${tag ?? "All"}`,
             images: [
                 {
-                    url: `https://opengraph.b-cdn.net/production/og-image/d96f0dfd-699a-479d-ac06-bdb53631d349.png?expires=33288302765&token=ywDpHK6KmEtpWc8I4n3BiDWO-Br1mL5Md-mnrdW6XqA`,
+                    url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
                     width: 1200,
                     height: 630,
                     alt: "NoteHub tasks plan preview",
@@ -39,21 +39,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
 
-const NotesByTags = async ({ params }: Props) => {
+export default async function NotesByTags({ params }: Props){
     const { slug } = await params;
-    const tag = slug[0] === "All" ? undefined : slug[0];
+    const tag = slug[0] === "All" ? "All" : slug[0];
 
-    const response = await fetchNotes(1, 12, '', tag);
+    const response = await fetchNotes(1, 12, "", tag);
     
-    return (
-        <div>
-            <h1>Notes List</h1>
-           
-            <NotesClient initialData={response} tag={tag} />
-          
-            
-        </div>);
+    return  <NotesClient initialData={response} tag={tag} />
   };
   
-  export default NotesByTags;
+
   

@@ -8,14 +8,16 @@ export const metadata: Metadata={
   openGraph: {
     title: '404 - Page not found',
     description: 'Sorry, the page you are looking for does not exist.',
-    url: "",
+    url: "https://08-zustand-fawn-six.vercel.app/not-found",
     images: [
       {
         url: `https://lamcdn.net/lookatme.ru/post_image-image/sIaRmaFSMfrw8QJIBAa8mA-article.png`,
          width: 1200,
-          height: 630,
+         height: 630,
+         alt: `Сторінка, яку ви шукали, відсутня. Переконайтеся, що сторінка вірна.`
       }
-    ]
+    ],
+    type: "article",
     
   }
 }

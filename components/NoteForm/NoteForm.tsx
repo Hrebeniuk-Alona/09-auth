@@ -3,13 +3,13 @@
 import css from "../NoteForm/NoteForm.module.css"
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useId, useState } from "react";
+import React, { useId, useState } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { NoteTag, NewNoteContent} from "@/types/note";
 import { createNote } from "@/lib/api";
 import { tags } from "@/lib/constans";
-
+import { useNoteDraft } from "@/lib/store/noteStore";
 
 
 
@@ -31,7 +31,8 @@ import { tags } from "@/lib/constans";
 export default function NoteForm() {
   const router = useRouter();
   const fieldId = useId();
-  const [errors] = useState<Partial<NewNoteContent>>({})
+  const [errors] = useState<Partial<NewNoteContent>>({});
+  const { draft, setDraft, clearDraft} = useNoteDraft();
   
 
 
@@ -39,6 +40,7 @@ export default function NoteForm() {
         mutationFn: createNote, 
         onSuccess: () => {
           toast.success("Note created successfully!"); 
+          clearDraft()
           router.push('/notes/filter/all');
         },
         onError: (error) => {
@@ -54,8 +56,6 @@ export default function NoteForm() {
 };
 
 mutation.mutate(values);
-
-
     
     try {
       await validationSchema.validate(values)
@@ -68,6 +68,14 @@ mutation.mutate(values);
     }
   }
 
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setDraft({
+      ...draft,
+      [event.target.name]: event.target.value,
+    })
+  };
+
     
   return (
     <form action={handleSubmit} className={css.form} >
@@ -76,7 +84,8 @@ mutation.mutate(values);
           <input
             id={`${fieldId}-title`}
             type="text" name="title" 
-           className={css.input}/>
+          className={css.input}
+         defaultValue={draft?.title} onChange={handleChange}/>
          {(errors.title && <div className={css.error}>{errors.title}</div>) ||
           "\u00A0"}
       </div>
@@ -84,7 +93,7 @@ mutation.mutate(values);
 
       <div className={css.formGroup}>
         <label htmlFor={`${fieldId}-content`}>Content</label>
-        <textarea id={`${fieldId}-content`} name="content" rows={8} className={css.textarea} /> 
+        <textarea id={`${fieldId}-content`} name="content" className={css.textarea} defaultValue={draft?.content} onChange={handleChange} /> 
         {(errors.content && (
           <div className={css.error}>{ errors.content}</div>
         )) || "\u00A0"}
@@ -93,7 +102,7 @@ mutation.mutate(values);
 
       <div className={css.formGroup}>
         <label  htmlFor={`${fieldId}-tag`}>Tag</label>
-        <select id={`${fieldId}-tag`} name="tag" className={css.select}>
+        <select id={`${fieldId}-tag`} name="tag" className={css.select} defaultValue={draft?.tag} onChange={handleChange}>
           {tags.map((tag) =>(
               <option key={tag} value={tag}>
               {tag}
