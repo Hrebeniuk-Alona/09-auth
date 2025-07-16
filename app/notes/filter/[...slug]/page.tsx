@@ -8,7 +8,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } =await params;
-    const tag = slug[0] === "All" ? "All" : slug[0];
+    const tag = slug[0] === "All" ? undefined : slug[0];
     
     const readableTag = tag ? tag[0].toUpperCase() + tag.slice(1) : "All Notes"
     
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NotesByTags({ params }: Props){
     const { slug } = await params;
-    const tag = slug[0] === "All" ? "All" : slug[0];
+    const tag = slug[0] === "All" ? undefined : slug[0];
 
     const response = await fetchNotes(1, 12, "", tag);
     

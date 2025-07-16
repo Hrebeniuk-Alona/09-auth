@@ -58,7 +58,7 @@ const NotesClient=({initialData, tag}:Props)=>{
             {notes.length > 0 && (<Pagination onClickPage={handlePageClick} pageCount={totalPages}
               currentPage={page} />)}
             
-            <Link href="/app/notes/action/create" className={css.button}>Create note +</Link>
+            <Link href="/notes/action/create" className={css.button}>Create note +</Link>
      
           </header>
 
