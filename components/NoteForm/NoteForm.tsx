@@ -1,7 +1,7 @@
 'use client'; 
 
 import css from "../NoteForm/NoteForm.module.css"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useId, useState } from "react";
 import toast from "react-hot-toast";
@@ -29,6 +29,8 @@ import { useNoteDraft } from "@/lib/store/noteStore";
 
 
 export default function NoteForm() {
+  const queryClient = useQueryClient(); 
+
   const router = useRouter();
   const fieldId = useId();
   const [errors] = useState<Partial<NewNoteContent>>({});
@@ -38,33 +40,34 @@ export default function NoteForm() {
 
     const mutation = useMutation({
         mutationFn: createNote, 
-        onSuccess: () => {
-          toast.success("Note created successfully!"); 
+      onSuccess: () => {
           clearDraft()
-          router.push('/notes/filter/all');
+           queryClient.invalidateQueries({ queryKey: ["notes"] });
+          toast.success("Note created successfully!"); 
+          router.back();
         },
         onError: (error) => {
           toast.error(`Error creating note: ${error.message}`); 
         },
     });
   
-  const handleSubmit=async(formData:FormData) =>{
-    const values: NewNoteContent = {
-  title: formData.get("title") as string,
-  content: formData.get("content") as string,
-  tag: formData.get("tag") as NoteTag,
-};
+  const handleSubmit=async(formData:FormData) =>{ 
+    try {const values: NewNoteContent = {
+     title: formData.get("title") as string,
+     content: formData.get("content") as string,
+     tag: formData.get("tag") as NoteTag,
+    }
 
-mutation.mutate(values);
-    
-    try {
       await validationSchema.validate(values)
       mutation.mutate(values)
     }
     catch(error) {
       if (error instanceof Yup.ValidationError) {
         toast.error(error.errors.join("\n"))
-      }
+      } else {
+    toast.error("Unexpected error. See console for details.");
+    console.error("handleSubmit error:", error);
+  }
     }
   }
 
