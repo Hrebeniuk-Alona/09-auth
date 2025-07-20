@@ -51,7 +51,8 @@ const EditProfile = () => {
     <form action={handleSubmit} className={css.profileInfo}>
       <div className={css.usernameWrapper}>
         <label htmlFor="username">Username:</label>
-        <input id="username"
+          <input id="username"
+          name="username"
           type="text"
           className={css.input}
           defaultValue={userName}
@@ -65,7 +66,7 @@ const EditProfile = () => {
         <button type="submit" className={css.saveButton} onClick={close}>
           Save
         </button>
-        <button type="button" className={css.cancelButton}>
+        <button type="button" className={css.cancelButton} onClick={close}>
           Cancel
         </button>
       </div>

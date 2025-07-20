@@ -1,5 +1,5 @@
 import { nextServer } from "./api";
-import { Note, NewNoteContent, FetchNotesResponse } from "@/types/note";
+import { Note, NewNoteContent, FetchNotesResponse, DeletedNoteInfo } from "@/types/note";
 import { User, RegisterRequest, LoginRequest, UpdateUserRequest, UserRes } from "@/types/user";
 import { CheckSessionRequest } from "@/types/session";
 
@@ -30,8 +30,8 @@ export const createNote = async (content: NewNoteContent): Promise<Note> => {
 };
 
 
-export const deleteNote = async (id: number): Promise<Note> => {
-  const res = await nextServer.delete<Note>(`/notes/${id}`);
+export const deleteNote = async (id: number): Promise<DeletedNoteInfo> => {
+  const res = await nextServer.delete<DeletedNoteInfo>(`/notes/${id}`);
   return res.data
 }
 
@@ -60,12 +60,12 @@ export const checkSession = async ():Promise<CheckSessionRequest> => {
 
 
 export const getMe = async () => {
-  const { data } = await nextServer.get<UserRes>('/auth/me');
+  const { data } = await nextServer.get<UserRes>('/users/me');
   return data;
 }
 
 export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout')
+  await nextServer.post('/auth/logout');
 }
 
 export async function updateUser(payload: UpdateUserRequest): Promise<UserRes> {

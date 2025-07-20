@@ -1,6 +1,6 @@
 'use client'
 
-import { Note } from "@/types/note";
+import { DeletedNoteInfo, Note } from "@/types/note";
 import css from "../NoteList/NoteList.module.css"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast";
@@ -16,7 +16,7 @@ export default function NoteList({ notes }: NoteListProps){
     const queryClient = useQueryClient();
 
 
-    const deleteNoteMutation = useMutation<Note, Error, number>({
+    const deleteNoteMutation = useMutation<DeletedNoteInfo, Error, number>({
         mutationFn: deleteNote, 
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["notes"] }); 
