@@ -1,4 +1,4 @@
-import SidebarNotes from "@/app/(private-routes)/notes/filter/@sidebar/SidebarNotes";
+import SidebarNotes from "@/app/(private routes)/notes/filter/@sidebar/SidebarNotes";
 
 const NotesSidebar =() =>{
     return (
