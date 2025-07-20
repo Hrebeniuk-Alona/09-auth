@@ -1,13 +1,9 @@
 import { nextServer } from "./api";
-import { Note, NewNoteContent } from "@/types/note";
+import { Note, NewNoteContent, FetchNotesResponse } from "@/types/note";
 import { User, RegisterRequest, LoginRequest, UpdateUserRequest, UserRes } from "@/types/user";
 import { CheckSessionRequest } from "@/types/session";
 
   
-export type FetchNotesResponse = {
-    notes: Note[];
-    totalPages: number;
-}
 
 export const fetchNotes = async (
   page: number = 1,

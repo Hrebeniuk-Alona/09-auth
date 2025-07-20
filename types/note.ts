@@ -7,6 +7,11 @@ export interface Note{
     tag: NoteTag
 }
 
+export type FetchNotesResponse = {
+    notes: Note[];
+    totalPages: number;
+}
+
 export interface NewNoteContent {
     title: string;
     content?: string;

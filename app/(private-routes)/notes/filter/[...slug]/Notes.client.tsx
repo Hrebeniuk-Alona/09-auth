@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from 'react'
-import { fetchNotes , FetchNotesResponse} from '@/lib/api/clientApi'
+import { fetchNotes } from '@/lib/api/clientApi'
+import { FetchNotesResponse } from '@/types/note'
 import { keepPreviousData, useQuery} from "@tanstack/react-query"
 import { useDebounce } from "use-debounce";
 import { Note } from '@/types/note';
