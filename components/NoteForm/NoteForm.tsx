@@ -7,7 +7,7 @@ import React, { useId, useState } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { NoteTag, NewNoteContent} from "@/types/note";
-import { createNote } from "@/lib/api";
+import { createNote } from "@/lib/api/clientApi"; 
 import { tags } from "@/lib/constans";
 import { useNoteDraft } from "@/lib/store/noteStore";
 
