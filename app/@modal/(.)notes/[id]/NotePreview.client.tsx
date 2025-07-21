@@ -10,13 +10,13 @@ import Loading from "@/app/loading";
 
 export default function PreviewClient() {
     const router = useRouter();
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const closeModal = () => router.back();
 
 
      const { data: note, isLoading } = useQuery({
         queryKey: ["note", id],
-         queryFn: () => fetchNoteById(Number(id)),
+         queryFn: () => fetchNoteById(id),
          refetchOnMount: false,
         })
 

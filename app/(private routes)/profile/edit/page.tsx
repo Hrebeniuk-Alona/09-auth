@@ -63,7 +63,7 @@ const EditProfile = () => {
       <p>Email: {user?.email}</p>
 
       <div className={css.actions}>
-        <button type="submit" className={css.saveButton} onClick={close}>
+        <button type="submit" className={css.saveButton}>
           Save
         </button>
         <button type="button" className={css.cancelButton} onClick={close}>

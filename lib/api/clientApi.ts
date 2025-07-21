@@ -30,13 +30,13 @@ export const createNote = async (content: NewNoteContent): Promise<Note> => {
 };
 
 
-export const deleteNote = async (id: number): Promise<DeletedNoteInfo> => {
+export const deleteNote = async (id: string): Promise<DeletedNoteInfo> => {
   const res = await nextServer.delete<DeletedNoteInfo>(`/notes/${id}`);
   return res.data
 }
 
 
-export const fetchNoteById = async (id: number):Promise<Note> => {
+export const fetchNoteById = async (id: string):Promise<Note> => {
   const res = await nextServer.get<Note>(`/notes/${id}`)
   return res.data
 }
@@ -59,7 +59,7 @@ export const checkSession = async ():Promise<CheckSessionRequest> => {
 }
 
 
-export const getMe = async () => {
+export const getMe = async ():Promise<UserRes> => {
   const { data } = await nextServer.get<UserRes>('/users/me');
   return data;
 }
